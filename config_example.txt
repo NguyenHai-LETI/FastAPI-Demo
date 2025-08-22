@@ -1,0 +1,15 @@
+# Copy nội dung này vào file .env trong thư mục gốc của dự án
+
+# Database Configuration
+DATABASE_URL=sqlite:///./app.db
+
+# JWT Configuration
+SECRET_KEY=your-secret-key-here-change-in-production
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# Optional: PostgreSQL Configuration
+# DATABASE_URL=postgresql://username:password@localhost:5432/dbname
+
+# Optional: MySQL Configuration  
+# DATABASE_URL=mysql+pymysql://username:password@localhost:3306/dbname
