@@ -8,36 +8,28 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+#Khởi tạo ứng dụng và các trờng cơ bản
 app = FastAPI(
-    title="FastAPI User Management",
-    description="API quản lý user đơn giản với FastAPI và PostgreSQL",
+    title="FastAPI demo",
+    description="Demo using FastAPI",
     version="1.0.0",
-    contact={
-        "name": "API Support",
-        "email": "support@example.com",
-    },
-    license_info={
-        "name": "MIT",
-    },
 )
 
 @app.on_event("startup")
 async def startup_event():
-    """Tạo bảng khi khởi động"""
+    """Trong dự án thực tế startup chỉ để:
+    1. tạo kết nối tới service bên ngoài: redis, rabbitmq
+    2. pre-load dữ lieu người dùng, cấu hình log monitorring
+    3. Kiểm tra kết nối db: ping db, check pool connection, KHÔNG TẠO/TƯƠNG TÁC DB"""
     try:
-        Base.metadata.create_all(bind=engine)
+        Base.metadata.create_all(bind=engine) # tạo mọi bảng được khai báo
         logger.info("Database tables created successfully")
     except Exception as e:
         logger.error(f"Startup error: {e}")
 
+#thẻ tags để phân nhóm docs/swagger
 app.include_router(auth_router, prefix="/users", tags=["users"])
 
 @app.get("/", tags=["root"])
-def root():
-    """Root endpoint - Thông tin API"""
-    return {
-        "message": "FastAPI User Management API",
-        "version": "1.0.0",
-        "docs": "/docs",
-        "redoc": "/redoc"
-    }
+def read_root():
+    return {"message": "Hello FastAPI"}

@@ -1,6 +1,6 @@
-#!/usr/bin/env python3
 """
 File để chạy trực tiếp từ thư mục App
+run using uvicorn
 """
 import uvicorn
 from main import app

@@ -9,7 +9,6 @@ def create_database_url():
     if settings.DATABASE_URL:
         return settings.DATABASE_URL
     else:
-        # Fallback: tạo từ các biến riêng lẻ
         return f"postgresql://{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
 
 # Tạo database engine
@@ -24,7 +23,7 @@ engine = create_engine(
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# Dependency
+# Dependency injection khi route gọi
 def get_db():
     db = SessionLocal()
     try:
