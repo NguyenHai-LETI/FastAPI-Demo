@@ -5,17 +5,35 @@ from datetime import datetime
 class UserBase(BaseModel):
     username: str = Field(..., min_length=3, max_length=50, description="Username của user")
     email: EmailStr = Field(..., description="Email của user")
-    full_name: Optional[str] = Field(None, max_length=100, description="Tên đầy đủ của user")
+
+
+class UserLogin(UserBase):
+    password: str
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                'username': 'admin',
+                "email": "admin@mail.com",
+                "password": "123456",
+            }
+        }
+    }
+
 
 class UserCreate(UserBase):
-    class Config:
-        schema_extra = {
+    password: str
+
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "username": "john_doe",
                 "email": "john@example.com",
-                "full_name": "John Doe"
+                "password": "123456",
             }
         }
+    }
+
 
 class UserResponse(UserBase):
     id: int = Field(..., description="ID của user")
@@ -24,17 +42,24 @@ class UserResponse(UserBase):
     created_at: datetime = Field(..., description="Thời gian tạo")
     updated_at: Optional[datetime] = Field(None, description="Thời gian cập nhật")
 
-    class Config:
-        from_attributes = True
-        schema_extra = {
+    # Cho phép tạo model từ ORM object (SQLAlchemy)
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {
             "example": {
                 "id": 1,
                 "username": "john_doe",
                 "email": "john@example.com",
-                "full_name": "John Doe",
                 "is_active": True,
                 "is_superuser": False,
                 "created_at": "2024-01-01T00:00:00Z",
                 "updated_at": None
             }
         }
+    }
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
+    user: UserResponse

@@ -19,6 +19,11 @@ engine = create_engine(
     pool_pre_ping=True,
     pool_recycle=300
 )
+with engine.connect() as connection:
+    print("✅ Kết nối đến database thành công!")
+
+
+
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
